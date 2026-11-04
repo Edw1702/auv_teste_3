@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+  <BehaviorTree ID="AUV_TESTE_3">
+    <Fallback>
+      <Sequence name="(Missão)">
+        <SetBlackboard output_key="role"
+                       value="survey_repair"/>
+        <RetryUntilSuccessful num_attempts="200">
+          <Switch2 case_1="true"
+                   case_2="false"
+                   variable="{at_bins_pipe}">
+            <AlwaysSuccess/>
+            <AlwaysFailure/>
+            <AlwaysFailure/>
+          </Switch2>
+        </RetryUntilSuccessful>
+        <Repeat num_cycles="2">
+          <Sequence>
+            <Fallback>
+              <Switch2 case_1="true"
+                       case_2="false"
+                       variable="{is_role_bin}">
+                <AlwaysSuccess/>
+                <AlwaysFailure/>
+                <AlwaysFailure/>
+              </Switch2>
+              <AlwaysSuccess/>
+            </Fallback>
+            <Sleep msec="1500"/>
+            <SetBlackboard output_key="drop_marker"
+                           value="true"/>
+            <ForceSuccess>
+              <Sequence>
+                <Switch2 case_1="true"
+                         case_2="false"
+                         variable="{light_active}">
+                  <AlwaysSuccess/>
+                  <AlwaysFailure/>
+                  <AlwaysFailure/>
+                </Switch2>
+                <SetBlackboard output_key="engage_magnet"
+                               value="true"/>
+                <Sleep msec="500"/>
+                <SetBlackboard output_key="engage_magnet"
+                               value="false"/>
+              </Sequence>
+            </ForceSuccess>
+          </Sequence>
+        </Repeat>
+      </Sequence>
+      <Sequence name="(Erro)">
+        <SetBlackboard output_key="surface_auv"
+                       value="true"/>
+        <Sleep msec="3000"/>
+        <SetBlackboard output_key="shutdown_auv"
+                       value="true"/>
+      </Sequence>
+    </Fallback>
+  </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel/>
+
+</root>
